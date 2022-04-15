@@ -8,8 +8,8 @@ public class LineGenerator : MonoBehaviour
     [SerializeField] private Transform paper;
     [SerializeField] private Transform tipPosition;
 
-    private Line activeLine;
-    private bool isTouching;
+    private Line activeLine = null;
+    private bool isTouching = false;
 
     void Update()
     {
