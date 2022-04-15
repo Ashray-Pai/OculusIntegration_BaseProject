@@ -12,29 +12,27 @@ public class Line : MonoBehaviour
     private LineRenderer lineRenderer = null;
     // store the points that make up the line in a list of Vector3.
     private List<Vector3> points = new List<Vector3>();
+    private float drawingThreshold = 0.001f;
 
-    private void Start()
+
+    private void Awake()
     {
         this.lineRenderer = GetComponent<LineRenderer>();
-        Debug.Log("started line");
-
-    }
-
-    // Adds a point at a new position and syncs the line renderer size.
-    public void SetPoint(Vector3 newPosition)
-    {
-        this.points.Add(newPosition);
-
-        this.lineRenderer.positionCount = this.points.Count;
-        this.lineRenderer.SetPosition(this.points.Count - 1, newPosition);
     }
 
     // Update the line with a new position.
-    public void UpdateLine(Vector3 position)
+    public void UpdateLine(Vector3 newPoistion)
     {
-        if(points.Count ==0)
-            this.SetPoint(position);
-        else if (Vector3.Distance(this.points.Last(), position) > 0.001f)
-            this.SetPoint(position);
+        if (this.GetDistance(newPoistion))
+        {
+            this.points.Add(newPoistion);
+            this.lineRenderer.positionCount = this.points.Count;
+            this.lineRenderer.SetPosition(this.points.Count - 1, newPoistion);
+        }
+    }
+
+    private bool GetDistance(Vector3 position)
+    {
+        return this.points.Count == 0 ? true : Vector3.Distance(this.points.Last(), position) > this.drawingThreshold;
     }
 }

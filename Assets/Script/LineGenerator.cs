@@ -10,40 +10,37 @@ public class LineGenerator : MonoBehaviour
 
     private Line activeLine = null;
     private bool isTouching = false;
+    private float cutoutOffset = 0.001f;
 
     void Update()
     {
-        if(isTouching && activeLine == null)
+        if (this.isTouching && this.activeLine == null)
         {
-            GameObject newLine = Instantiate(linePrefab);
-            activeLine = newLine.GetComponent<Line>();
+            GameObject newLine = Instantiate(this.linePrefab);
+            this.activeLine = newLine.GetComponent<Line>();
         }
 
-        if(!isTouching)
+        if (!this.isTouching)
         {
-            activeLine = null;
+            this.activeLine = null;
         }
 
-        if(activeLine != null)
+        if(this.activeLine != null)
         {
-            Vector3 newPos = new Vector3(tipPosition.position.x, paper.position.y +0.001f, tipPosition.position.z);
-            Debug.Log("Tip pos " + tipPosition);
-            activeLine.UpdateLine(newPos);
+            Vector3 newPos = new Vector3(this.tipPosition.position.x, this.paper.position.y + this.cutoutOffset, this.tipPosition.position.z);
+            this.activeLine.UpdateLine(newPos);
         }
     }
     private void OnTriggerEnter(Collider other)
     {
         if( other.tag == "Paper")
-            isTouching = true;
-        Debug.Log("trigger entered" + isTouching);
+            this.isTouching = true;
     }
 
     private void OnTriggerExit(Collider other)
     {
         if (other.tag == "Paper")
-            isTouching = false;
-        Debug.Log("trigger entered" + isTouching);
-
+            this.isTouching = false;
     }
 
 }
